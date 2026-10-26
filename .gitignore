@@ -1,0 +1,28 @@
+# --- Entornos y Python ---
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.env
+
+# --- Datos (no se versionan; se conserva la estructura) ---
+data/raw/*
+data/interim/*
+data/processed/*
+!data/**/.gitkeep
+
+# --- Modelos serializados ---
+models/*
+!models/.gitkeep
+
+# --- MLflow ---
+mlruns/
+mlartifacts/
+mlflow.db
+
+# --- Sistema operativo / editores ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
