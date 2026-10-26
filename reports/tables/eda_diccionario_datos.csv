@@ -1,0 +1,15 @@
+﻿Atributo,Descripción,Tipo,Tipo pandas,Valores observados
+PatientId,Identificador del paciente,Identificador,object,"62,299 valores únicos"
+AppointmentID,Identificador del turno,Identificador,int64,"110,527 valores únicos"
+Gender,Género del paciente (F/M),Categórico binario,object,"F, M"
+ScheduledDay,Fecha y hora en que se agendó el turno,Fecha-hora,object,2015-11-10 a 2016-06-08
+AppointmentDay,Fecha del turno,Fecha,object,2016-04-29 a 2016-06-08
+Age,Edad del paciente en años,Numérico discreto,int64,-1 a 115
+Neighbourhood,Barrio donde se realiza la atención,Categórico nominal,object,81 categorías
+Scholarship,Inscripto en el programa social Bolsa Família (1 = sí),Categórico binario,int64,"0, 1"
+Hipertension,Tiene hipertensión (1 = sí),Categórico binario,int64,"0, 1"
+Diabetes,Tiene diabetes (1 = sí),Categórico binario,int64,"0, 1"
+Alcoholism,Tiene alcoholismo (1 = sí),Categórico binario,int64,"0, 1"
+Handcap,Cantidad de discapacidades (0 a 4),Numérico discreto,int64,"0, 1, 2, 3, 4"
+SMS_received,Recibió al menos un SMS recordatorio (1 = sí),Categórico binario,int64,"0, 1"
+No-show,No asistió al turno (Yes = no asistió) - VARIABLE OBJETIVO,Categórico binario,object,"No, Yes"

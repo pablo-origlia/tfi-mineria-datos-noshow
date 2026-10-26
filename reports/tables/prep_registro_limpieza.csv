@@ -1,0 +1,4 @@
+﻿Paso,Filas eliminadas,Filas restantes,Justificación
+Edad negativa,1,110526,Valor imposible
+Edad mayor a 110 años,5,110521,"Valor implausible (115 años, repetido en varios registros)"
+Turno anterior al agendamiento,5,110516,Inconsistencia temporal: un turno no puede agendarse después de ocurrir

@@ -1,0 +1,20 @@
+﻿Atributo,Tipo,Origen,Descripción,Árboles,Lineal
+edad,Numérico,Original,Edad en años,Sí,No
+anticipacion_dias,Numérico,Derivado,Días entre agendamiento y turno,Sí,Sí
+hora_agenda,Numérico,Derivado,Hora en que se agendó el turno,Sí,Sí
+turnos_mismo_dia,Numérico,Derivado,Turnos del paciente ese día,Sí,Sí
+turnos_previos,Numérico,Derivado,Turnos del paciente en días anteriores,Sí,Sí
+ausencias_previas,Numérico,Derivado,Ausencias en días anteriores,Sí,Sí
+tasa_ausencias_previas,Numérico,Derivado,Proporción de ausencias previas,Sí,Sí
+mujer,Binario,Transformado (de genero),Género femenino,Sí,Sí
+beca,Binario,Original,Inscripto en Bolsa Família,Sí,Sí
+hipertension,Binario,Original,Tiene hipertensión,Sí,Sí
+diabetes,Binario,Original,Tiene diabetes,Sí,Sí
+alcoholismo,Binario,Original,Tiene alcoholismo,Sí,Sí
+discapacidad,Binario,Transformado (binarizado),Tiene al menos una discapacidad,Sí,Sí
+sms_recibido,Binario,Original,Recibió SMS recordatorio,Sí,Sí
+mismo_dia,Binario,Derivado,Turno agendado para el mismo día,Sí,Sí
+tiene_historial,Binario,Derivado,Tiene turnos previos,Sí,Sí
+dia_semana,Categórico,Derivado,Día de la semana del turno (0 = lunes),Sí,Sí
+grupo_edad,Categórico,Derivado (discretización de edad),Tramo de edad,No,Sí
+barrio,Categórico,Original,Barrio de atención,Sí,Sí

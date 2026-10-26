@@ -1,0 +1,14 @@
+﻿Problema,Evidencia,Acción propuesta
+Valores faltantes,0 valores,No requiere acción
+Filas duplicadas exactas,0 filas,No requiere acción
+Varios turnos del mismo paciente el mismo día,"16,200 filas (14.7%); 82% de los grupos con igual resultado",Conservar como turnos distintos; partición agrupada por paciente para evitar fuga
+Edad negativa,1 fila(s) (0.001%),Eliminar
+Edad mayor a 100 años,7 filas (0.006%),Revisar plausibilidad; eliminar valores imposibles
+Handcap con valores 2 a 4,199 filas (0.180%),"Es un conteo, no un error: conservar o binarizar (> 0)"
+Turno anterior al agendamiento,5 filas (0.005%),Eliminar (inconsistencia temporal)
+AppointmentDay sin hora,"110,527 filas (100%)",No se puede usar la hora del turno como atributo
+Turnos en sábado,39 filas (0.035%),Categoría casi vacía: agrupar o tratar con cuidado
+PatientId con formato irregular,5 fila(s),Conservar (solo se usa como identificador de grupo)
+Género inconsistente por paciente,0 pacientes,No requiere acción
+Barrios con menos de 50 turnos,5 barrios (56 turnos),Agrupar en 'Otros' o usar codificación por frecuencia/objetivo
+Nombres de columnas con errores,"Hipertension, Handcap, No-show",Renombrar
