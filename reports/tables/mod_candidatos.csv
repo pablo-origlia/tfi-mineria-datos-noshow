@@ -1,0 +1,5 @@
+﻿Rol,modelo,estrategia,Modelo,Estrategia,PR-AUC,PR-AUC (desvío),ROC-AUC,F1 con umbral óptimo,Δ vs. mejor (media),Folds en que supera al mejor
+Candidato a optimizar,lightgbm,ninguna,LightGBM,Sin tratamiento,0.38144670255608853,0.014314259535621633,0.7442391963995174,0.4566042111889734,0.0,0
+Candidato a optimizar,xgboost,ninguna,XGBoost,Sin tratamiento,0.36588928262950676,0.009305958593730186,0.7351627057469,0.4500397744959015,-0.015557419926581717,0
+Candidato a optimizar,logistica,ninguna,Regresión Logística,Sin tratamiento,0.36575320707186026,0.015292765135306018,0.7360560940862386,0.4508531770190117,-0.015693495484228236,0
+Referencia interpretable,arbol,submuestreo,Árbol de Decisión,Submuestreo aleatorio,0.24243623241915108,0.005868719958487682,0.5957576115203423,0.37190931633014523,-0.13901047013693746,0
