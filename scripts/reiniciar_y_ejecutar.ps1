@@ -12,7 +12,7 @@
     5. Ejecuta scripts/verificar_salidas.py para comprobar que no falte nada.
 
 .PARAMETER Hasta
-    Último notebook a ejecutar (1 a 3). Por defecto, 3.
+    Último notebook a ejecutar (1 a 4). Por defecto, 4.
 
 .PARAMETER IncluirMuestra
     Borra y regenera también la muestra de desarrollo (data/interim).
@@ -28,10 +28,13 @@
 
 .EXAMPLE
     .\scripts\reiniciar_y_ejecutar.ps1 -IncluirMuestra -Forzar
+
+.EXAMPLE
+    .\scripts\reiniciar_y_ejecutar.ps1 -Hasta 3   # regenera solo hasta el notebook 03
 #>
 [CmdletBinding()]
 param(
-    [ValidateRange(1, 3)][int]$Hasta = 3,
+    [ValidateRange(1, 4)][int]$Hasta = 4,
     [switch]$IncluirMuestra,
     [switch]$SoloLimpiar,
     [switch]$Forzar
@@ -41,7 +44,7 @@ $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-$Notebooks = @("01_EDA.ipynb", "02_preparacion.ipynb", "03_modelado_baseline.ipynb")
+$Notebooks = @("01_EDA.ipynb", "02_preparacion.ipynb", "03_modelado_baseline.ipynb", "04_optimizacion_optuna.ipynb")
 
 function Write-Paso([string]$Texto) {
     Write-Host ""

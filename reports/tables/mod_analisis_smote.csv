@@ -1,0 +1,4 @@
+﻿Datos de entrenamiento,Prob. media en positivos reales,Prob. media en sintéticos,"% de turnos de validación con prob. > 0,5"
+Sin tratamiento,0.31795859264158743,,1.6102165463631315
+SMOTE,0.35269088094903644,0.9438953025817707,3.9367018323153804
+SMOTE con enteros redondeados,0.5329385856651523,0.6966465118960133,47.59022765130483

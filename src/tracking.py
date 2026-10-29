@@ -18,11 +18,13 @@ from src.data import ruta_procesados
 ARTEFACTOS_DIR = config.ROOT_DIR / "mlartifacts"
 
 
-def configurar_experimento(clave: str, usar_muestra: bool = False) -> str:
+def configurar_experimento(clave: str, usar_muestra: bool = False, reiniciar: bool = False) -> str:
     """Configura MLflow (base SQLite en la raíz del repo) y activa el experimento.
 
     Los experimentos con la muestra llevan el sufijo '_muestra' para no mezclarse con
     los del dataset completo. Los artefactos se guardan en 'mlartifacts/'.
+    Con reiniciar=True, las corridas existentes del experimento se marcan como eliminadas
+    (borrado lógico de MLflow), para que una reejecución no duplique corridas.
     """
     mlflow.set_tracking_uri(config.MLFLOW_TRACKING_URI)
     nombre = config.MLFLOW_EXPERIMENTS[clave] + ("_muestra" if usar_muestra else "")
@@ -39,6 +41,12 @@ def configurar_experimento(clave: str, usar_muestra: bool = False) -> str:
     else:
         id_exp = experimento.experiment_id
     mlflow.set_experiment(nombre)
+    if reiniciar:
+        anteriores = mlflow.search_runs(experiment_ids=[id_exp])
+        for run_id in anteriores.get("run_id", []):
+            mlflow.delete_run(run_id)
+        if len(anteriores):
+            print(f"Se archivaron {len(anteriores)} corridas anteriores del experimento {nombre}.")
     return id_exp
 
 

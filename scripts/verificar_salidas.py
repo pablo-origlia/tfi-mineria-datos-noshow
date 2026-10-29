@@ -9,7 +9,7 @@ Revisa, etapa por etapa:
 
 Uso (desde la raíz del repositorio):
     python scripts/verificar_salidas.py
-    python scripts/verificar_salidas.py --hasta 2      # verifica solo hasta el notebook 02
+    python scripts/verificar_salidas.py --hasta 3      # verifica solo hasta el notebook 03
 
 Devuelve código de salida 1 si algún control falla.
 """
@@ -90,6 +90,14 @@ def verificar_existe(etapa: str, ruta: Path) -> None:
     control(etapa, f"Existe {ruta.relative_to(ROOT)}", ruta.exists())
 
 
+def leer_metadatos(etapa: str) -> dict | None:
+    """Lee los metadatos de la preparación; si faltan, registra la falla en lugar de interrumpir."""
+    ruta = config.DATA_PROCESSED / "metadatos_preparacion.json"
+    if not control(etapa, "Metadatos de la preparación disponibles", ruta.exists()):
+        return None
+    return json.loads(ruta.read_text(encoding="utf-8"))
+
+
 # ---------------------------------------------------------------------------
 # Controles por etapa
 # ---------------------------------------------------------------------------
@@ -152,7 +160,9 @@ def etapa_03() -> None:
     import mlflow
 
     mlflow.set_tracking_uri(config.MLFLOW_TRACKING_URI)
-    meta = json.loads((config.DATA_PROCESSED / "metadatos_preparacion.json").read_text(encoding="utf-8"))
+    meta = leer_metadatos(etapa)
+    if meta is None:
+        return
     for clave, esperadas in [("baseline", 6), ("desbalance", 15)]:
         nombre = config.MLFLOW_EXPERIMENTS[clave]
         corridas = mlflow.search_runs(experiment_names=[nombre])
@@ -176,15 +186,66 @@ def etapa_03() -> None:
     control(etapa, "Sin experimentos de la muestra mezclados", not otros, ", ".join(otros))
 
 
+def etapa_04() -> None:
+    import pandas as pd
+
+    etapa = "04 Optuna"
+    verificar_notebook(etapa, "04_optimizacion_optuna.ipynb")
+    verificar_archivos(etapa, config.FIGURES_DIR, "opt_*.png", 4)
+    for t in ["opt_resumen.md", "opt_espacios_busqueda.csv", "opt_mejores_configuraciones.csv",
+              "opt_comparacion_baseline.csv", "opt_mejora_pareada.csv", "opt_importancia_hiperparametros.csv"]:
+        verificar_existe(etapa, config.TABLES_DIR / t)
+
+    meta = leer_metadatos(etapa)
+    if meta is None:
+        return
+    ruta_sel = config.TABLES_DIR / "opt_seleccion.json"
+    if control(etapa, "Existe opt_seleccion.json", ruta_sel.exists()):
+        sel = json.loads(ruta_sel.read_text(encoding="utf-8"))
+        control(etapa, "Selección hecha con el dataset completo", sel.get("datos") == "Dataset completo", sel.get("datos", ""))
+        control(etapa, "Selección asociada al hash del dataset actual", sel.get("dataset_sha256") == meta["sha256"])
+        final = sel.get("modelo_final", {})
+        control(etapa, "Modelo final definido (modelo, versión, estrategia, parámetros)",
+                all(k in final for k in ("modelo", "version", "estrategia", "params")),
+                f"{final.get('modelo')} ({final.get('version')})")
+        control(etapa, "Referencia interpretable definida", "referencia_interpretable" in sel)
+
+    candidatos = pd.read_csv(config.TABLES_DIR / "mod_candidatos.csv") if (config.TABLES_DIR / "mod_candidatos.csv").exists() else None
+    if not (ROOT / "mlflow.db").exists() or candidatos is None:
+        control(etapa, "Base de MLflow y candidatos disponibles", False)
+        return
+    logging.disable(logging.INFO)
+    import mlflow
+
+    mlflow.set_tracking_uri(config.MLFLOW_TRACKING_URI)
+    nombre = config.MLFLOW_EXPERIMENTS["optuna"]
+    corridas = mlflow.search_runs(experiment_names=[nombre])
+    if not control(etapa, f"Experimento {nombre} existe", len(corridas) > 0):
+        return
+    estudios = corridas[corridas["tags.tipo"] == "estudio"]
+    trials = corridas[corridas["tags.tipo"] == "trial"]
+    control(etapa, f"{nombre}: una corrida padre por candidato", len(estudios) == len(candidatos),
+            f"{len(estudios)} estudios, {len(candidatos)} candidatos")
+    n_trials = estudios["params.n_trials"].astype(int).sum() if len(estudios) else -1
+    control(etapa, f"{nombre}: un trial registrado por cada trial ejecutado", len(trials) == n_trials,
+            f"{len(trials)} registrados, {n_trials} ejecutados")
+    control(etapa, f"{nombre}: todos los trials con corrida padre",
+            trials["tags.mlflow.parentRunId"].isin(estudios["run_id"]).all())
+    control(etapa, f"{nombre}: todas finalizadas", (corridas["status"] == "FINISHED").all())
+    control(etapa, f"{nombre}: todas con el hash del dataset actual", (corridas["tags.dataset_sha256"] == meta["sha256"]).all())
+    commits = corridas["tags.git_commit"].unique()
+    control(etapa, f"{nombre}: commit de Git registrado", "sin_git" not in commits, ", ".join(commits))
+
+
 # ---------------------------------------------------------------------------
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Verifica las salidas del proyecto.")
-    parser.add_argument("--hasta", type=int, default=3, help="Último notebook a verificar (1 a 3)")
+    parser.add_argument("--hasta", type=int, default=4, help="Último notebook a verificar (1 a 4)")
     args = parser.parse_args()
 
     verificar_entorno()
-    for numero, funcion in [(1, etapa_01), (2, etapa_02), (3, etapa_03)]:
+    for numero, funcion in [(1, etapa_01), (2, etapa_02), (3, etapa_03), (4, etapa_04)]:
         if numero <= args.hasta:
             funcion()
 
