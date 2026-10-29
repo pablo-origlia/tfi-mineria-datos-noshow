@@ -1,6 +1,6 @@
 # Verificación de salidas del proyecto
 
-**Controles:** 55 | **Superados:** 55 | **Fallidos:** 0
+**Controles:** 80 | **Superados:** 80 | **Fallidos:** 0
 
 | Etapa | Control | Resultado | Detalle |
 |---|---|---|---|
@@ -45,6 +45,7 @@
 | 03 Modelado | Existe reports\tables\mod_analisis_smote.csv | OK |  |
 | 03 Modelado | Existe reports\tables\mod_corridas_mlflow.csv | OK |  |
 | 03 Modelado | Existe la base de MLflow (mlflow.db) | OK |  |
+| 03 Modelado | Metadatos de la preparación disponibles | OK |  |
 | 03 Modelado | Experimento 01_baseline existe | OK |  |
 | 03 Modelado | 01_baseline: 6 corridas | OK | 6 corridas |
 | 03 Modelado | 01_baseline: sin corridas duplicadas | OK |  |
@@ -59,3 +60,27 @@
 | 03 Modelado | 02_desbalance: todas con el hash del dataset actual | OK |  |
 | 03 Modelado | 02_desbalance: commit de Git registrado | OK | 768108c |
 | 03 Modelado | Sin experimentos de la muestra mezclados | OK |  |
+| 04 Optuna | Notebook 04_optimizacion_optuna.ipynb existe | OK |  |
+| 04 Optuna | 04_optimizacion_optuna.ipynb: todas las celdas ejecutadas | OK | 0 sin ejecutar |
+| 04 Optuna | 04_optimizacion_optuna.ipynb: sin errores | OK |  |
+| 04 Optuna | 04_optimizacion_optuna.ipynb: ejecutado con el dataset completo | OK | USAR_MUESTRA = False |
+| 04 Optuna | 4 archivos opt_*.png en reports\figures | OK | 4 encontrados |
+| 04 Optuna | Existe reports\tables\opt_resumen.md | OK |  |
+| 04 Optuna | Existe reports\tables\opt_espacios_busqueda.csv | OK |  |
+| 04 Optuna | Existe reports\tables\opt_mejores_configuraciones.csv | OK |  |
+| 04 Optuna | Existe reports\tables\opt_comparacion_baseline.csv | OK |  |
+| 04 Optuna | Existe reports\tables\opt_mejora_pareada.csv | OK |  |
+| 04 Optuna | Existe reports\tables\opt_importancia_hiperparametros.csv | OK |  |
+| 04 Optuna | Metadatos de la preparación disponibles | OK |  |
+| 04 Optuna | Existe opt_seleccion.json | OK |  |
+| 04 Optuna | Selección hecha con el dataset completo | OK | Dataset completo |
+| 04 Optuna | Selección asociada al hash del dataset actual | OK |  |
+| 04 Optuna | Modelo final definido (modelo, versión, estrategia, parámetros) | OK | lightgbm (optimizado) |
+| 04 Optuna | Referencia interpretable definida | OK |  |
+| 04 Optuna | Experimento 03_optuna existe | OK |  |
+| 04 Optuna | 03_optuna: una corrida padre por candidato | OK | 4 estudios, 4 candidatos |
+| 04 Optuna | 03_optuna: un trial registrado por cada trial ejecutado | OK | 240 registrados, 240 ejecutados |
+| 04 Optuna | 03_optuna: todos los trials con corrida padre | OK |  |
+| 04 Optuna | 03_optuna: todas finalizadas | OK |  |
+| 04 Optuna | 03_optuna: todas con el hash del dataset actual | OK |  |
+| 04 Optuna | 03_optuna: commit de Git registrado | OK | 78c8b43 |

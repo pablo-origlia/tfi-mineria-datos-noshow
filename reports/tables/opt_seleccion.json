@@ -1,0 +1,34 @@
+{
+  "datos": "Dataset completo",
+  "dataset_sha256": "40d361e54c4cd001e1c062e326c199206e44089db0d0ceb24d7879bd8a0413e6",
+  "modelo_final": {
+    "modelo": "lightgbm",
+    "version": "optimizado",
+    "estrategia": "ninguna",
+    "params": {
+      "n_estimators": 108,
+      "learning_rate": 0.05194964150567601,
+      "num_leaves": 50,
+      "min_child_samples": 22,
+      "subsample": 0.9181331372497834,
+      "subsample_freq": 1,
+      "colsample_bytree": 0.9533138056920186,
+      "reg_alpha": 0.020074100888057035,
+      "reg_lambda": 3.944568768649456
+    },
+    "pr_auc_cv": 0.3837445361104329,
+    "pr_auc_cv_desvio": 0.01422092426004445
+  },
+  "referencia_interpretable": {
+    "modelo": "arbol",
+    "version": "optimizado",
+    "estrategia": "ninguna",
+    "params": {
+      "max_depth": 18,
+      "min_samples_leaf": 364,
+      "criterion": "gini"
+    },
+    "pr_auc_cv": 0.3572923077811234,
+    "pr_auc_cv_desvio": 0.009100162084795364
+  }
+}

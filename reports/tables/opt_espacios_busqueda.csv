@@ -1,0 +1,26 @@
+﻿Modelo,Hiperparámetro,Rango
+LightGBM,estrategia,ninguna o pesos
+LightGBM,n_estimators,100 a 1000 (log)
+LightGBM,learning_rate,"0,01 a 0,2 (log)"
+LightGBM,num_leaves,8 a 128 (log)
+LightGBM,min_child_samples,10 a 300 (log)
+LightGBM,subsample,"0,5 a 1"
+LightGBM,colsample_bytree,"0,4 a 1"
+LightGBM,reg_alpha,"0,001 a 10 (log)"
+LightGBM,reg_lambda,"0,001 a 10 (log)"
+XGBoost,estrategia,ninguna o pesos
+XGBoost,n_estimators,100 a 1000 (log)
+XGBoost,learning_rate,"0,01 a 0,3 (log)"
+XGBoost,max_depth,3 a 10
+XGBoost,min_child_weight,1 a 50 (log)
+XGBoost,subsample,"0,5 a 1"
+XGBoost,colsample_bytree,"0,4 a 1"
+XGBoost,reg_alpha,"0,001 a 10 (log)"
+XGBoost,reg_lambda,"0,001 a 10 (log)"
+Regresión Logística,estrategia,ninguna o pesos
+Regresión Logística,C,"0,001 a 10 (log)"
+Regresión Logística,penalty,l1 o l2
+Árbol de Decisión,estrategia,ninguna o pesos o submuestreo
+Árbol de Decisión,max_depth,3 a 20
+Árbol de Decisión,min_samples_leaf,5 a 500 (log)
+Árbol de Decisión,criterion,gini o entropy

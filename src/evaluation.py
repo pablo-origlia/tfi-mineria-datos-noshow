@@ -93,3 +93,54 @@ def umbral_f1_optimo(y_true, proba) -> tuple[float, float]:
     f1 = 2 * precision * recall / np.clip(precision + recall, 1e-12, None)
     i = int(np.argmax(f1[:-1]))
     return float(umbrales[i]), float(f1[i])
+
+
+# ---------------------------------------------------------------------------
+# Umbral de decisión y evaluación final con intervalos de confianza
+# ---------------------------------------------------------------------------
+
+def umbral_para_recall(y_true, proba, recall_minimo: float) -> float:
+    """Mayor umbral que alcanza al menos el recall indicado (maximiza la precisión con ese recall)."""
+    precision, recall, umbrales = precision_recall_curve(y_true, proba)
+    validos = np.where(recall[:-1] >= recall_minimo)[0]
+    return float(umbrales[validos[-1]]) if len(validos) else float(umbrales[0])
+
+
+def umbral_para_capacidad(proba, fraccion: float) -> float:
+    """Umbral que marca como riesgo a la fracción indicada de turnos (los de mayor probabilidad)."""
+    return float(np.quantile(proba, 1 - fraccion))
+
+
+def metricas_ponderadas(y_true, proba, umbral: float, pesos=None) -> dict[str, float]:
+    """Métricas con pesos por fila (los pesos permiten un bootstrap rápido sin copiar datos)."""
+    pred = (proba >= umbral).astype(int)
+    return {
+        "pr_auc": average_precision_score(y_true, proba, sample_weight=pesos),
+        "roc_auc": roc_auc_score(y_true, proba, sample_weight=pesos),
+        "recall": recall_score(y_true, pred, sample_weight=pesos, zero_division=0),
+        "precision": precision_score(y_true, pred, sample_weight=pesos, zero_division=0),
+        "f1": f1_score(y_true, pred, sample_weight=pesos, zero_division=0),
+        "balanced_accuracy": balanced_accuracy_score(y_true, pred, sample_weight=pesos),
+        "brier": brier_score_loss(y_true, proba, sample_weight=pesos),
+    }
+
+
+def bootstrap_por_grupo(y_true, probas: dict, umbrales: dict, grupos, n: int = 1000, seed: int = 42):
+    """Bootstrap agrupado por paciente sobre el conjunto de prueba.
+
+    En cada réplica se remuestrean pacientes con reposición; cada turno recibe como peso la
+    cantidad de veces que salió sorteado su paciente. Todos los modelos se evalúan sobre las
+    mismas réplicas, lo que permite comparar diferencias pareadas.
+    Devuelve un DataFrame largo con columnas: replica, modelo, métrica, valor.
+    """
+    y_true = np.asarray(y_true)
+    codigos, indice = np.unique(np.asarray(grupos), return_inverse=True)
+    rng = np.random.default_rng(seed)
+    filas = []
+    for r in range(n):
+        conteo = rng.multinomial(len(codigos), np.full(len(codigos), 1 / len(codigos)))
+        pesos = conteo[indice]
+        for nombre, proba in probas.items():
+            for metrica, valor in metricas_ponderadas(y_true, proba, umbrales[nombre], pesos).items():
+                filas.append((r, nombre, metrica, valor))
+    return pd.DataFrame(filas, columns=["replica", "modelo", "metrica", "valor"])

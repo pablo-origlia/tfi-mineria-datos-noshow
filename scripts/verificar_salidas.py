@@ -237,15 +237,66 @@ def etapa_04() -> None:
     control(etapa, f"{nombre}: commit de Git registrado", "sin_git" not in commits, ", ".join(commits))
 
 
+def etapa_05() -> None:
+    etapa = "05 Evaluación"
+    verificar_notebook(etapa, "05_evaluacion_final.ipynb")
+    verificar_archivos(etapa, config.FIGURES_DIR, "fin_*.png", 7)
+    for t in ["fin_resumen.md", "fin_puntos_operacion_oof.csv", "fin_resultados_prueba.csv",
+              "fin_resultados_prueba_ic.csv", "fin_diferencias_prueba.csv", "fin_cv_vs_prueba.csv",
+              "fin_impacto_por_mil.csv", "fin_curva_ganancia.csv", "fin_importancia_permutacion.csv",
+              "fin_importancia_grupos.csv", "fin_reglas_arbol.csv"]:
+        verificar_existe(etapa, config.TABLES_DIR / t)
+
+    meta = leer_metadatos(etapa)
+    ruta_modelo, ruta_meta_modelo = config.MODELS_DIR / "modelo_final.joblib", config.MODELS_DIR / "modelo_final.json"
+    control(etapa, "Modelo final serializado en models/", ruta_modelo.exists())
+    if meta is None or not control(etapa, "Metadatos del modelo final en models/", ruta_meta_modelo.exists()):
+        return
+    meta_modelo = json.loads(ruta_meta_modelo.read_text(encoding="utf-8"))
+    control(etapa, "Modelo final asociado al hash del dataset actual", meta_modelo.get("dataset_sha256") == meta["sha256"])
+    ruta_sel = config.TABLES_DIR / "opt_seleccion.json"
+    if ruta_sel.exists():
+        sel = json.loads(ruta_sel.read_text(encoding="utf-8"))["modelo_final"]
+        control(etapa, "Modelo final coincide con la selección del notebook 04",
+                meta_modelo.get("modelo") == sel["modelo"] and meta_modelo.get("params") == sel["params"],
+                f"{meta_modelo.get('modelo')} ({meta_modelo.get('version')})")
+    umbral = meta_modelo.get("umbral", -1)
+    control(etapa, "Umbral de decisión definido en (0, 1)", 0 < umbral < 1, f"{umbral:.4f}")
+
+    if not (ROOT / "mlflow.db").exists():
+        control(etapa, "Base de MLflow disponible", False)
+        return
+    logging.disable(logging.INFO)
+    import mlflow
+    from mlflow.tracking import MlflowClient
+
+    mlflow.set_tracking_uri(config.MLFLOW_TRACKING_URI)
+    nombre = config.MLFLOW_EXPERIMENTS["final"]
+    corridas = mlflow.search_runs(experiment_names=[nombre])
+    if not control(etapa, f"Experimento {nombre} existe", len(corridas) > 0):
+        return
+    control(etapa, f"{nombre}: 5 modelos evaluados en prueba", len(corridas) == 5, f"{len(corridas)} corridas")
+    control(etapa, f"{nombre}: todas finalizadas", (corridas["status"] == "FINISHED").all())
+    control(etapa, f"{nombre}: todas con el hash del dataset actual", (corridas["tags.dataset_sha256"] == meta["sha256"]).all())
+    commits = corridas["tags.git_commit"].unique()
+    control(etapa, f"{nombre}: commit de Git registrado", "sin_git" not in commits, ", ".join(commits))
+    try:
+        versiones = MlflowClient().search_model_versions("name='noshow_modelo_final'")
+        control(etapa, "Modelo registrado en el Model Registry (noshow_modelo_final)", len(versiones) > 0,
+                f"{len(versiones)} versión(es)")
+    except Exception as error:
+        control(etapa, "Modelo registrado en el Model Registry (noshow_modelo_final)", False, str(error)[:80])
+
+
 # ---------------------------------------------------------------------------
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Verifica las salidas del proyecto.")
-    parser.add_argument("--hasta", type=int, default=4, help="Último notebook a verificar (1 a 4)")
+    parser.add_argument("--hasta", type=int, default=5, help="Último notebook a verificar (1 a 5)")
     args = parser.parse_args()
 
     verificar_entorno()
-    for numero, funcion in [(1, etapa_01), (2, etapa_02), (3, etapa_03), (4, etapa_04)]:
+    for numero, funcion in [(1, etapa_01), (2, etapa_02), (3, etapa_03), (4, etapa_04), (5, etapa_05)]:
         if numero <= args.hasta:
             funcion()
 

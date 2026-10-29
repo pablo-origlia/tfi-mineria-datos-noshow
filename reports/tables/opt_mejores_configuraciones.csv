@@ -1,0 +1,5 @@
+﻿Modelo,Mejor trial,Estrategia,Hiperparámetros
+LightGBM,56,Sin tratamiento,"n_estimators=108, learning_rate=0.05195, num_leaves=50, min_child_samples=22, subsample=0.9181, subsample_freq=1, colsample_bytree=0.9533, reg_alpha=0.02007, reg_lambda=3.945"
+XGBoost,44,Sin tratamiento,"n_estimators=384, learning_rate=0.01111, max_depth=7, min_child_weight=12.94, subsample=0.7628, colsample_bytree=0.7331, reg_alpha=0.3723, reg_lambda=0.001506"
+Regresión Logística,51,Sin tratamiento,"C=0.01296, penalty=l2, solver=liblinear"
+Árbol de Decisión,37,Sin tratamiento,"max_depth=18, min_samples_leaf=364, criterion=gini"
