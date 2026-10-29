@@ -1,0 +1,8 @@
+﻿N.º,Regla,Turnos (entrenamiento),No-show (entrenamiento),Turnos (prueba),No-show (prueba)
+1,mismo_dia <= 0.50 y edad <= 44.50 y anticipacion_dias > 9.50,17427,0.36695931600390197,4579,0.3677658877484167
+2,mismo_dia > 0.50 y ausencias_previas > 2.50,426,0.33568075117370894,108,0.4166666666666667
+3,mismo_dia <= 0.50 y edad > 44.50 y tasa_ausencias_previas > 0.26,2392,0.3139632107023411,545,0.28623853211009176
+4,mismo_dia <= 0.50 y edad <= 44.50 y anticipacion_dias <= 9.50,15451,0.2841887256488253,3896,0.28311088295687886
+5,mismo_dia <= 0.50 y edad > 44.50 y tasa_ausencias_previas <= 0.26,22018,0.21827595603597058,5647,0.21834602443775455
+6,mismo_dia > 0.50 y ausencias_previas <= 2.50 y tasa_ausencias_previas > 0.14,2677,0.09002614867388868,739,0.08525033829499323
+7,mismo_dia > 0.50 y ausencias_previas <= 2.50 y tasa_ausencias_previas <= 0.14,27910,0.03647438194195629,6701,0.04208327115355917

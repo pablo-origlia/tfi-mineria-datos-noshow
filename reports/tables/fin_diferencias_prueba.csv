@@ -1,0 +1,4 @@
+﻿Comparación,Δ PR-AUC (prueba),IC 95% inferior,IC 95% superior,Réplicas en que el final es mejor,¿Diferencia consistente?
+Final - LightGBM por defecto,0.0034387002167921565,-0.0002467204351912083,0.007511228291111878,96.1%,No
+Final - Árbol de Decisión optimizado,0.027850104670896214,0.016783156456763825,0.03943545315622402,100.0%,Sí
+Final - Árbol de Decisión (profundidad 3),0.06353365985957743,0.05010698144553542,0.07812002806926713,100.0%,Sí

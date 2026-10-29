@@ -1,4 +1,4 @@
-# Python 3.11
+# Python 3.12 (versión con la que se desarrolló y validó el proyecto)
 # Manipulación y análisis
 numpy==1.26.4
 pandas==2.2.3

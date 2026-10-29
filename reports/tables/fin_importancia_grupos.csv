@@ -1,0 +1,7 @@
+﻿Grupo,Atributos,Caída de PR-AUC (media),Caída de PR-AUC (desvío)
+Anticipación del turno,"anticipacion_dias, mismo_dia",0.1546722592232974,0.003664247843280336
+Demográficos,"edad, mujer, barrio, beca",0.05714988827146976,0.0030346582979623588
+Historial del paciente,"turnos_previos, ausencias_previas, tasa_ausencias_previas, tiene_historial",0.028640386676002653,0.002886608973568892
+Agenda del día,"turnos_mismo_dia, dia_semana, hora_agenda",0.014729966151495988,0.002336339894959011
+Recordatorio SMS,sms_recibido,0.010592784827243695,0.001080556972889097
+Clínicos,"hipertension, diabetes, alcoholismo, discapacidad",0.0024744448305148658,0.0014831329070882596

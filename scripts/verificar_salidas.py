@@ -43,8 +43,14 @@ def control(etapa: str, descripcion: str, ok: bool, detalle: str = "") -> bool:
 # Controles generales
 # ---------------------------------------------------------------------------
 
+PYTHON_ESPERADO = (3, 12)
+
+
 def verificar_entorno() -> None:
     etapa = "Entorno"
+    actual = sys.version_info[:2]
+    control(etapa, f"Python {PYTHON_ESPERADO[0]}.{PYTHON_ESPERADO[1]}", actual == PYTHON_ESPERADO,
+            f"{sys.version.split()[0]}")
     req = (ROOT / "requirements.txt").read_text(encoding="utf-8").splitlines()
     distintas = []
     for linea in req:

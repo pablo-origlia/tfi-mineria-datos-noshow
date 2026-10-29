@@ -1,6 +1,6 @@
 # Verificación de salidas del proyecto
 
-**Controles:** 80 | **Superados:** 80 | **Fallidos:** 0
+**Controles:** 108 | **Superados:** 108 | **Fallidos:** 0
 
 | Etapa | Control | Resultado | Detalle |
 |---|---|---|---|
@@ -84,3 +84,31 @@
 | 04 Optuna | 03_optuna: todas finalizadas | OK |  |
 | 04 Optuna | 03_optuna: todas con el hash del dataset actual | OK |  |
 | 04 Optuna | 03_optuna: commit de Git registrado | OK | 78c8b43 |
+| 05 Evaluación | Notebook 05_evaluacion_final.ipynb existe | OK |  |
+| 05 Evaluación | 05_evaluacion_final.ipynb: todas las celdas ejecutadas | OK | 0 sin ejecutar |
+| 05 Evaluación | 05_evaluacion_final.ipynb: sin errores | OK |  |
+| 05 Evaluación | 05_evaluacion_final.ipynb: ejecutado con el dataset completo | OK | USAR_MUESTRA = False |
+| 05 Evaluación | 7 archivos fin_*.png en reports\figures | OK | 7 encontrados |
+| 05 Evaluación | Existe reports\tables\fin_resumen.md | OK |  |
+| 05 Evaluación | Existe reports\tables\fin_puntos_operacion_oof.csv | OK |  |
+| 05 Evaluación | Existe reports\tables\fin_resultados_prueba.csv | OK |  |
+| 05 Evaluación | Existe reports\tables\fin_resultados_prueba_ic.csv | OK |  |
+| 05 Evaluación | Existe reports\tables\fin_diferencias_prueba.csv | OK |  |
+| 05 Evaluación | Existe reports\tables\fin_cv_vs_prueba.csv | OK |  |
+| 05 Evaluación | Existe reports\tables\fin_impacto_por_mil.csv | OK |  |
+| 05 Evaluación | Existe reports\tables\fin_curva_ganancia.csv | OK |  |
+| 05 Evaluación | Existe reports\tables\fin_importancia_permutacion.csv | OK |  |
+| 05 Evaluación | Existe reports\tables\fin_importancia_grupos.csv | OK |  |
+| 05 Evaluación | Existe reports\tables\fin_reglas_arbol.csv | OK |  |
+| 05 Evaluación | Metadatos de la preparación disponibles | OK |  |
+| 05 Evaluación | Modelo final serializado en models/ | OK |  |
+| 05 Evaluación | Metadatos del modelo final en models/ | OK |  |
+| 05 Evaluación | Modelo final asociado al hash del dataset actual | OK |  |
+| 05 Evaluación | Modelo final coincide con la selección del notebook 04 | OK | lightgbm (optimizado) |
+| 05 Evaluación | Umbral de decisión definido en (0, 1) | OK | 0.2301 |
+| 05 Evaluación | Experimento 04_modelo_final existe | OK |  |
+| 05 Evaluación | 04_modelo_final: 5 modelos evaluados en prueba | OK | 5 corridas |
+| 05 Evaluación | 04_modelo_final: todas finalizadas | OK |  |
+| 05 Evaluación | 04_modelo_final: todas con el hash del dataset actual | OK |  |
+| 05 Evaluación | 04_modelo_final: commit de Git registrado | OK | 32fa9df |
+| 05 Evaluación | Modelo registrado en el Model Registry (noshow_modelo_final) | OK | 1 versión(es) |
