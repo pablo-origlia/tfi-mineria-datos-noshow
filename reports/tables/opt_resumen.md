@@ -57,34 +57,34 @@
 
 | Hiperparámetro | LightGBM | XGBoost | Regresión Logística | Árbol de Decisión |
 |---|---|---|---|---|
-| num_leaves | 0.296 | - | - | - |
-| min_child_samples | 0.271 | - | - | - |
-| learning_rate | 0.21 | 0.67 | - | - |
-| n_estimators | 0.157 | 0.113 | - | - |
-| colsample_bytree | 0.048 | 0.047 | - | - |
-| subsample | 0.011 | 0.051 | - | - |
-| reg_alpha | 0.005 | 0.019 | - | - |
-| estrategia | 0.001 | 0.004 | 0.957 | 0.043 |
-| reg_lambda | 0.001 | 0.005 | - | - |
-| max_depth | - | 0.065 | - | 0.444 |
-| min_child_weight | - | 0.025 | - | - |
-| C | - | - | 0.035 | - |
+| n_estimators | 0.263 | 0.095 | - | - |
+| min_child_samples | 0.237 | - | - | - |
+| num_leaves | 0.237 | - | - | - |
+| learning_rate | 0.186 | 0.712 | - | - |
+| subsample | 0.034 | 0.093 | - | - |
+| colsample_bytree | 0.031 | 0.031 | - | - |
+| reg_alpha | 0.011 | 0.006 | - | - |
+| reg_lambda | 0.001 | 0.003 | - | - |
+| estrategia | 0 | 0.007 | 0.952 | 0.021 |
+| max_depth | - | 0.035 | - | 0.435 |
+| min_child_weight | - | 0.019 | - | - |
+| C | - | - | 0.039 | - |
 | penalty | - | - | 0.009 | - |
-| min_samples_leaf | - | - | - | 0.512 |
+| min_samples_leaf | - | - | - | 0.541 |
 | criterion | - | - | - | 0.002 |
 
 ## Baseline frente a optimizado
 
 | Modelo | Versión | Estrategia | PR-AUC | PR-AUC (desvío) | ROC-AUC | F1 con umbral óptimo | Brier | PR-AUC entrenamiento | Brecha de sobreajuste | Segundos (5 folds) |
 |---|---|---|---|---|---|---|---|---|---|---|
-| LightGBM | Baseline | Sin tratamiento | 0.3814 | 0.0143 | 0.7442 | 0.4566 | 0.1415 | 0.4898 | 0.1084 | 1.3437 |
-| LightGBM | Optimizado | Sin tratamiento | 0.3837 | 0.0142 | 0.7451 | 0.457 | 0.1413 | 0.4725 | 0.0888 | 2.3501 |
-| XGBoost | Baseline | Sin tratamiento | 0.3659 | 0.0093 | 0.7352 | 0.45 | 0.1441 | 0.5907 | 0.2248 | 1.142 |
-| XGBoost | Optimizado | Sin tratamiento | 0.3827 | 0.0154 | 0.745 | 0.4578 | 0.1413 | 0.4535 | 0.0707 | 5.8863 |
-| Regresión Logística | Baseline | Sin tratamiento | 0.3658 | 0.0153 | 0.7361 | 0.4509 | 0.1429 | 0.3676 | 0.0018 | 1.2361 |
-| Regresión Logística | Optimizado | Sin tratamiento | 0.3663 | 0.0145 | 0.7357 | 0.451 | 0.1429 | 0.3679 | 0.0016 | 1.0764 |
-| Árbol de Decisión | Baseline | Submuestreo aleatorio | 0.2424 | 0.0059 | 0.5958 | 0.3719 | 0.4015 | 0.4625 | 0.22 | 0.73 |
-| Árbol de Decisión | Optimizado | Sin tratamiento | 0.3573 | 0.0091 | 0.7315 | 0.4482 | 0.1435 | 0.3799 | 0.0226 | 0.6999 |
+| LightGBM | Baseline | Sin tratamiento | 0.3814 | 0.0143 | 0.7442 | 0.4566 | 0.1415 | 0.4898 | 0.1084 | 1.9712 |
+| LightGBM | Optimizado | Sin tratamiento | 0.3837 | 0.0142 | 0.7451 | 0.457 | 0.1413 | 0.4725 | 0.0888 | 2.5058 |
+| XGBoost | Baseline | Sin tratamiento | 0.3659 | 0.0093 | 0.7352 | 0.45 | 0.1441 | 0.5907 | 0.2248 | 2.3018 |
+| XGBoost | Optimizado | Sin tratamiento | 0.3827 | 0.0154 | 0.745 | 0.4578 | 0.1413 | 0.4535 | 0.0707 | 7.8602 |
+| Regresión Logística | Baseline | Sin tratamiento | 0.3658 | 0.0153 | 0.7361 | 0.4509 | 0.1429 | 0.3676 | 0.0018 | 2.2021 |
+| Regresión Logística | Optimizado | Sin tratamiento | 0.3663 | 0.0145 | 0.7357 | 0.451 | 0.1429 | 0.3679 | 0.0016 | 1.571 |
+| Árbol de Decisión | Baseline | Submuestreo aleatorio | 0.2424 | 0.0059 | 0.5958 | 0.3719 | 0.4015 | 0.4625 | 0.22 | 1.2124 |
+| Árbol de Decisión | Optimizado | Sin tratamiento | 0.3573 | 0.0091 | 0.7315 | 0.4482 | 0.1435 | 0.3799 | 0.0226 | 1.0141 |
 
 ## Mejora pareada por fold
 

@@ -344,6 +344,7 @@ alerta = proba >= meta["umbral"]
 - *Hash* SHA-256 del dataset procesado verificado al inicio de cada notebook de modelado y registrado en cada corrida de MLflow.
 - Controles de consistencia entre etapas: el notebook 04 recalcula el baseline del 03, y el 05 recalcula la PR-AUC del 04; ambos deben coincidir.
 - Ejecución completa desde cero con un solo comando y verificación automática de todas las salidas.
+- Reproducibilidad comprobada: dos ejecuciones completas independientes produjeron resultados idénticos en las cinco etapas (excluidos los tiempos de cómputo).
 
 ---
 
@@ -444,7 +445,7 @@ Además, `Handcap` es un conteo de 0 a 4, no un atributo binario.
 - **Los dos modelos de *boosting* convergen al mismo techo (~0,383).** Es una señal de que el límite está en la información de los atributos, no en los hiperparámetros.
 - **LightGBM se seleccionó por el criterio definido de antemano** (mayor PR-AUC media), aunque la diferencia con XGBoost (+0,001, gana en 3 de 5 *folds*) es un empate técnico. Es además más simple: 108 árboles contra 384.
 - **El Árbol de Decisión fue el más beneficiado**, al regularizar su complejidad. Con el árbol bien regularizado, la ventaja del submuestreo desaparece.
-- La estrategia de desbalance tuvo una importancia prácticamente nula en los estudios (fANOVA ≤ 0,004 en *boosting*), y los cuatro mejores *trials* son "sin tratamiento".
+- La estrategia de desbalance tuvo una importancia baja en los estudios de *boosting* (fANOVA), y los cuatro mejores *trials* son "sin tratamiento".
 
 ### Evaluación final en prueba
 
@@ -506,6 +507,7 @@ Con el umbral de máximo F1 se alerta el 46,5% de los turnos, una carga operativ
 | Reinicio y verificación | Scripts `reiniciar_y_ejecutar.ps1` (ejecución completa desde cero) y `verificar_salidas.py` (controles automáticos de todas las etapas) |
 | Optimización | Notebook `04_optimizacion_optuna.ipynb` y módulo `src/optimization.py`. Configuración por defecto encolada como primer *trial*; regla de "mejor versión" por modelo; espacio para Random Forest; reejecución sin duplicar corridas (`reiniciar=True`) |
 | Evaluación final | Notebook `05_evaluacion_final.ipynb`: umbral en predicciones fuera de *fold*, evaluación única en prueba, *bootstrap* por paciente, curva de ganancia, calibración, importancia por permutación (por atributo y por grupo), reglas del árbol de profundidad 3, registro en el *Model Registry* y verificación de recarga |
+| Reproducibilidad de fANOVA | La importancia de hiperparámetros se calculaba sin semilla y variaba entre ejecuciones aunque los *trials* fueran idénticos. Ahora se calcula con 10 semillas fijas y se informan media y desvío. Detectado al comparar dos ejecuciones completas: todo lo demás resultó idéntico |
 | Documentación | Versión de Python corregida a 3.12 (la registrada por MLflow) y control de la versión de Python en la verificación. Lectura de la importancia por permutación ampliada al caso de atributos redundantes. Capturas de MLflow 01 a 09 |
 
 ---

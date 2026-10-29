@@ -1,9 +1,10 @@
 # Verificación de salidas del proyecto
 
-**Controles:** 108 | **Superados:** 108 | **Fallidos:** 0
+**Controles:** 109 | **Superados:** 109 | **Fallidos:** 0
 
 | Etapa | Control | Resultado | Detalle |
 |---|---|---|---|
+| Entorno | Python 3.12 | OK | 3.12.4 |
 | Entorno | Versiones instaladas iguales a requirements.txt | OK | todas coinciden |
 | Entorno | Dataset original en data/raw/ | OK | KaggleV2-May-2016.csv |
 | 01 EDA | Notebook 01_EDA.ipynb existe | OK |  |
@@ -51,14 +52,14 @@
 | 03 Modelado | 01_baseline: sin corridas duplicadas | OK |  |
 | 03 Modelado | 01_baseline: todas finalizadas | OK |  |
 | 03 Modelado | 01_baseline: todas con el hash del dataset actual | OK |  |
-| 03 Modelado | 01_baseline: commit de Git registrado | OK | 768108c |
+| 03 Modelado | 01_baseline: commit de Git registrado | OK | 43c7907 |
 | 03 Modelado | PR-AUC de entrenamiento del árbol sin poda ~1 (codificación corregida) | OK | 1.0000 |
 | 03 Modelado | Experimento 02_desbalance existe | OK |  |
 | 03 Modelado | 02_desbalance: 15 corridas | OK | 15 corridas |
 | 03 Modelado | 02_desbalance: sin corridas duplicadas | OK |  |
 | 03 Modelado | 02_desbalance: todas finalizadas | OK |  |
 | 03 Modelado | 02_desbalance: todas con el hash del dataset actual | OK |  |
-| 03 Modelado | 02_desbalance: commit de Git registrado | OK | 768108c |
+| 03 Modelado | 02_desbalance: commit de Git registrado | OK | 43c7907 |
 | 03 Modelado | Sin experimentos de la muestra mezclados | OK |  |
 | 04 Optuna | Notebook 04_optimizacion_optuna.ipynb existe | OK |  |
 | 04 Optuna | 04_optimizacion_optuna.ipynb: todas las celdas ejecutadas | OK | 0 sin ejecutar |
@@ -83,7 +84,7 @@
 | 04 Optuna | 03_optuna: todos los trials con corrida padre | OK |  |
 | 04 Optuna | 03_optuna: todas finalizadas | OK |  |
 | 04 Optuna | 03_optuna: todas con el hash del dataset actual | OK |  |
-| 04 Optuna | 03_optuna: commit de Git registrado | OK | 78c8b43 |
+| 04 Optuna | 03_optuna: commit de Git registrado | OK | 43c7907 |
 | 05 Evaluación | Notebook 05_evaluacion_final.ipynb existe | OK |  |
 | 05 Evaluación | 05_evaluacion_final.ipynb: todas las celdas ejecutadas | OK | 0 sin ejecutar |
 | 05 Evaluación | 05_evaluacion_final.ipynb: sin errores | OK |  |
@@ -110,5 +111,5 @@
 | 05 Evaluación | 04_modelo_final: 5 modelos evaluados en prueba | OK | 5 corridas |
 | 05 Evaluación | 04_modelo_final: todas finalizadas | OK |  |
 | 05 Evaluación | 04_modelo_final: todas con el hash del dataset actual | OK |  |
-| 05 Evaluación | 04_modelo_final: commit de Git registrado | OK | 32fa9df |
+| 05 Evaluación | 04_modelo_final: commit de Git registrado | OK | 43c7907 |
 | 05 Evaluación | Modelo registrado en el Model Registry (noshow_modelo_final) | OK | 1 versión(es) |
