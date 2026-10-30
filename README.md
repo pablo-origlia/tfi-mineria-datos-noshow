@@ -15,6 +15,10 @@ Este proyecto construye y compara **modelos de clasificación** que estiman, a p
 | **Momento de la predicción** | Antes del día del turno, cuando el centro de salud todavía puede actuar |
 | **Modelo final** | LightGBM optimizado con Optuna, umbral de decisión 0,230 |
 | **Desempeño en prueba** | PR-AUC 0,388 (IC 95%: 0,369 – 0,406) · ROC-AUC 0,741 · recall 74,5% |
+| **Informe final** | [`reports/informe_final.md`](reports/informe_final.md) |
+| **Versión de los resultados** | Etiqueta `v1.0` · *commit* `712d40d` |
+
+> El análisis completo, con la justificación de cada decisión, la interpretación de los resultados, las limitaciones y la bibliografía, está en el [informe final](reports/informe_final.md). Este README resume el proyecto y explica cómo reproducirlo.
 
 ---
 
@@ -196,7 +200,7 @@ tfi-mineria-datos-noshow/
 ├── reports/
 │   ├── figures/                          # 31 figuras (prefijos eda_, prep_, mod_, opt_, fin_)
 │   ├── tables/                           # Tablas CSV, resúmenes Markdown por etapa y verificacion.md
-│   └── informe_final.md                  # Informe del TFI (se exporta a PDF)
+│   └── informe_final.md                  # Informe final del TFI (Markdown; se exporta a PDF)
 ├── scripts/
 │   ├── crear_muestra.py                  # Genera la muestra de desarrollo
 │   ├── reiniciar_y_ejecutar.ps1          # Borra las salidas y ejecuta todo el proyecto desde cero
@@ -335,6 +339,36 @@ alerta = proba >= meta["umbral"]
 
 ---
 
+## Informe final
+
+El informe ([`reports/informe_final.md`](reports/informe_final.md)) sigue la estructura del enunciado del TFI.
+
+| Sección | Contenido |
+|---|---|
+| Resumen | Problema, datos, método, resultados y conclusión (con palabras clave) |
+| 1. Descripción del problema | Ausentismo, momento de la predicción y tarea de minería de datos |
+| 2. Objetivos, alcance y metodología | Objetivos, alcance, CRISP-DM y herramientas |
+| 3. Descripción de los datos | Diccionario, calidad, desbalance y análisis exploratorio (Figuras 1 a 9) |
+| 4. Limpieza y preparación | Limpieza, atributos, partición, relevancia y preprocesamiento (Figuras 10 y 11) |
+| 5. Modelado, algoritmos y evaluación | Experimentos, tratamiento del desbalance, Optuna y selección (Figuras 12 a 17) |
+| 6. Resultados obtenidos | Umbral, evaluación en prueba, uso operativo, factores y reglas (Figuras 18 a 24) |
+| 7. Conclusiones | Respuesta al problema, interpretación, limitaciones y extensiones |
+| 8. Bibliografía | 20 referencias en formato APA |
+| 9. Anexos | Código y reproducción, verificación automática, capturas de MLflow, configuraciones y figuras complementarias (E.1 a E.7) |
+
+**Figuras.** Los notebooks generan 31 figuras **sin título general ni número**: el número y el título de cada figura los define el informe en su epígrafe, que es el único lugar donde aparecen. Las figuras con varios paneles conservan el subtítulo de cada panel. El informe decide qué figuras incluye y en qué orden: usa 24 en el cuerpo y 7 en el Anexo E. Las imágenes se referencian con rutas relativas a `reports/` (`figures/…` y `../docs/capturas/…`), por lo que se visualizan directamente en GitHub.
+
+**Exportación a PDF** (entrega del TFI). Con [Pandoc](https://pandoc.org/) y un motor LaTeX instalados, desde la carpeta `reports/`:
+
+```powershell
+cd reports
+pandoc informe_final.md -f markdown-implicit_figures -o informe_final.pdf --pdf-engine=xelatex -V geometry:margin=2cm -V mainfont="Calibri" -V lang=es
+```
+
+La opción `-f markdown-implicit_figures` evita que Pandoc agregue su propia numeración ("Figure 1:"); el número sale solo del epígrafe, igual que en GitHub.
+
+---
+
 ## Reproducibilidad
 
 - Semilla global fija (`SEED = 42`) definida en `src/config.py`.
@@ -359,8 +393,10 @@ alerta = proba >= meta["umbral"]
 - [x] Optimización con Optuna
 - [x] Evaluación final, umbral e interpretación
 - [x] Registro del modelo en MLflow
-- [ ] Ejecución de punta a punta y verificación final
-- [ ] Informe final
+- [x] Ejecución de punta a punta y verificación final (109/109 controles)
+- [x] Reproducibilidad comprobada con dos ejecuciones completas independientes
+- [x] Capturas de MLflow para el anexo (9)
+- [x] Informe final
 
 ---
 
@@ -508,6 +544,9 @@ Con el umbral de máximo F1 se alerta el 46,5% de los turnos, una carga operativ
 | Optimización | Notebook `04_optimizacion_optuna.ipynb` y módulo `src/optimization.py`. Configuración por defecto encolada como primer *trial*; regla de "mejor versión" por modelo; espacio para Random Forest; reejecución sin duplicar corridas (`reiniciar=True`) |
 | Evaluación final | Notebook `05_evaluacion_final.ipynb`: umbral en predicciones fuera de *fold*, evaluación única en prueba, *bootstrap* por paciente, curva de ganancia, calibración, importancia por permutación (por atributo y por grupo), reglas del árbol de profundidad 3, registro en el *Model Registry* y verificación de recarga |
 | Reproducibilidad de fANOVA | La importancia de hiperparámetros se calculaba sin semilla y variaba entre ejecuciones aunque los *trials* fueran idénticos. Ahora se calcula con 10 semillas fijas y se informan media y desvío. Detectado al comparar dos ejecuciones completas: todo lo demás resultó idéntico |
+| Ejecución final | Ejecución completa de punta a punta con un único *commit* (`712d40d`), 109/109 controles superados y 9 capturas de MLflow tomadas sobre esa ejecución. Versión etiquetada como `v1.0` |
+| Informe final | `reports/informe_final.md`: resumen, 9 secciones según el enunciado, 24 figuras en el cuerpo, 29 tablas, 20 referencias en APA y 5 anexos |
+| Títulos y numeración de figuras | Las figuras de los notebooks ya no llevan título general ni número: ambos pertenecen al epígrafe del informe, lo que evita que el título aparezca dos veces. La información que contenían algunos títulos (escala logarítmica, conjunto de datos, tasa global) se reubicó en los ejes o en las leyendas. Las 7 figuras secundarias pasan a un anexo de figuras complementarias. Nuevo control en la verificación que impide volver a agregar títulos generales o numeración |
 | Documentación | Versión de Python corregida a 3.12 (la registrada por MLflow) y control de la versión de Python en la verificación. Lectura de la importancia por permutación ampliada al caso de atributos redundantes. Capturas de MLflow 01 a 09 |
 
 ---
@@ -520,10 +559,19 @@ Con el umbral de máximo F1 se alerta el 46,5% de los turnos, una carga operativ
 - Chawla, N. V., Bowyer, K. W., Hall, L. O., & Kegelmeyer, W. P. (2002). SMOTE: Synthetic minority over-sampling technique. *Journal of Artificial Intelligence Research*, 16, 321–357. https://doi.org/10.1613/jair.953
 - Chen, T., & Guestrin, C. (2016). XGBoost: A scalable tree boosting system. *Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*, 785–794. https://doi.org/10.1145/2939672.2939785
 - Efron, B., & Tibshirani, R. J. (1993). *An introduction to the bootstrap*. Chapman & Hall.
+- Fayyad, U., Piatetsky-Shapiro, G., & Smyth, P. (1996). From data mining to knowledge discovery in databases. *AI Magazine*, 17(3), 37–54. https://doi.org/10.1609/aimag.v17i3.1230
+- Han, J., Kamber, M., & Pei, J. (2012). *Data mining: Concepts and techniques* (3.ª ed.). Morgan Kaufmann.
+- Hernández Orallo, J., Ramírez Quintana, M. J., & Ferri Ramírez, C. (2004). *Introducción a la minería de datos*. Pearson Educación.
+- Hoppen, J. (2016). *Medical appointment no shows* [Conjunto de datos]. Kaggle. https://www.kaggle.com/datasets/joniarroba/noshowappointments
+- Hutter, F., Hoos, H., & Leyton-Brown, K. (2014). An efficient approach for assessing hyperparameter importance. *Proceedings of the 31st International Conference on Machine Learning*, 754–762.
 - Ke, G., Meng, Q., Finley, T., Wang, T., Chen, W., Ma, W., Ye, Q., & Liu, T.-Y. (2017). LightGBM: A highly efficient gradient boosting decision tree. *Advances in Neural Information Processing Systems*, 30.
+- Lemaître, G., Nogueira, F., & Aridas, C. K. (2017). Imbalanced-learn: A Python toolbox to tackle the curse of imbalanced datasets in machine learning. *Journal of Machine Learning Research*, 18(17), 1–5.
 - Micci-Barreca, D. (2001). A preprocessing scheme for high-cardinality categorical attributes in classification and prediction problems. *ACM SIGKDD Explorations Newsletter*, 3(1), 27–32. https://doi.org/10.1145/507533.507538
 - Miller, G. A. (1955). Note on the bias of information estimates. En H. Quastler (Ed.), *Information theory in psychology: Problems and methods* (pp. 95–100). Free Press.
+- Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., & Duchesnay, É. (2011). Scikit-learn: Machine learning in Python. *Journal of Machine Learning Research*, 12, 2825–2830.
 - Saito, T., & Rehmsmeier, M. (2015). The precision-recall plot is more informative than the ROC plot when evaluating binary classifiers on imbalanced datasets. *PLOS ONE*, 10(3), e0118432. https://doi.org/10.1371/journal.pone.0118432
+- Tan, P.-N., Steinbach, M., Karpatne, A., & Kumar, V. (2018). *Introduction to data mining* (2.ª ed.). Pearson.
+- Wilson, E. B. (1927). Probable inference, the law of succession, and statistical inference. *Journal of the American Statistical Association*, 22(158), 209–212. https://doi.org/10.1080/01621459.1927.10502953
 - Zaharia, M., Chen, A., Davidson, A., Ghodsi, A., Hong, S. A., Konwinski, A., Murching, S., Nykodym, T., Ogilvie, P., Parkhe, M., Xie, F., & Zumar, C. (2018). Accelerating the machine learning lifecycle with MLflow. *IEEE Data Engineering Bulletin*, 41(4), 39–45.
 
 ---

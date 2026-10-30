@@ -84,6 +84,11 @@ def verificar_notebook(etapa: str, nombre: str) -> None:
     control(etapa, f"{nombre}: ejecutado con el dataset completo",
             muestra is not None and muestra.group(1) == "False",
             f"USAR_MUESTRA = {muestra.group(1) if muestra else '?'}")
+    # El número y el título de cada figura pertenecen al informe: las figuras no llevan título general
+    numeradas = re.findall(r'f?"Figura \d+\.', fuente)
+    generales = fuente.count("fig.suptitle(")
+    control(etapa, f"{nombre}: figuras sin título general ni numeración", not numeradas and not generales,
+            f"{len(numeradas)} numeradas, {generales} con título general" if (numeradas or generales) else "")
 
 
 def verificar_archivos(etapa: str, carpeta: Path, patron: str, esperados: int) -> None:
